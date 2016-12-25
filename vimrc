@@ -89,6 +89,24 @@ source $VIMRUNTIME/ftplugin/man.vim
 " 定义:Man命令查看各类man信息的快捷键
 nmap <Leader>man :Man 3 <cword><CR>
 
+" 设置自动加载当前目录的工程设置
+if filereadable("workspace.vim")
+    source workspace.vim
+endif
+
+" 设置vim启动时自动读取session及viminfo信息
+if filereadable("workspace.session")
+    source workspace.session
+endif
+if filereadable("workspace.viminfo")
+    rviminfo workspace.viminfo
+endif
+
+" 设置vim退出时自动保存工程配置
+if filereadable("workspace.vim")  "表示需要保存，防止不必要的保存
+    au VimLeave * mksession workspace.session
+    au VimLeave * wviminfo workspace.viminfo
+endif
 
 " 随 vim 自启动
 let g:indent_guides_enable_on_vim_startup=1
